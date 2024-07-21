@@ -1,17 +1,16 @@
 import {productos} from './productos.js';
-import {carrito} from './carrito.js'
+import { almacenarCarrito} from './carrito.js'
 
 const arrayProductos = productos;
 
-const productosConId = [];
+export const productosConId = [];
 
 document.addEventListener('DOMContentLoaded',(e)=>{
 
-    console.log('Contenido cargado');
     agregarId(arrayProductos);
-    cargarProductos(productosConId);
+    mostrarProductos(productosConId);
     agregarListener();
-
+    //arrayProductos = productosConId;
 
 });
 
@@ -37,16 +36,12 @@ function agregarListener(){
 
 
 function agregarAlCarrito(id){
-    console.log('guardado en el carrito elemento ' + id);
+
     if( id && id > 0){
 
-       const res = productosConId.find(e => e.id == id );
-       console.log(res)
-       carrito.push(res)
-
+        almacenarCarrito(id);
+      
     }
-        console.clear();
-        console.table(carrito)
     
 }
 
@@ -70,15 +65,14 @@ function agregarId(productos){
     
 }
 
-function cargarProductos(productos){
+function mostrarProductos(productos){
 
-    productos.forEach(element => {
-        const container = document.createElement('div');
-        container.innerHTML = retornarCardHTML(element);
-    window.document.querySelector(".container").appendChild(
-        container
-    );
-
+    productos.forEach((element) => {
+      const container = document.createElement("div");
+      container.innerHTML = retornarCardHTML(element);
+      if (window.document.querySelector(".container")) {
+        window.document.querySelector(".container").appendChild(container);
+      }
     });
 
     console.log(arrayProductos);
