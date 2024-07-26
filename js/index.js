@@ -1,16 +1,19 @@
-import {productos} from './productos.js';
-import { almacenarCarrito} from './carrito.js'
+import { almacenarCarrito} from './carrito.js';
 
-const arrayProductos = productos;
-
-export const productosConId = [];
+export var productos = [];
 
 document.addEventListener('DOMContentLoaded',(e)=>{
 
-    agregarId(arrayProductos);
-    mostrarProductos(productosConId);
-    agregarListener();
-    //arrayProductos = productosConId;
+
+    fetch('./js/productos.json')
+    .then(res => res.json())
+    .then( (data) => {
+        console.log(data);
+        productos = data.productos;
+        mostrarProductos(productos);
+        agregarListener();
+    }
+        );
 
 });
 
@@ -24,8 +27,8 @@ function agregarListener(){
         (event)=>{
 
             if(event.target.getAttribute('id') > 0){
-            
-                agregarAlCarrito(event.target.getAttribute('id'))
+                            
+                agregarAlCarrito(productos.find( (e) => e.id == event.target.getAttribute('id')));
 
             }
         }
@@ -35,47 +38,27 @@ function agregarListener(){
 };
 
 
-function agregarAlCarrito(id){
+function agregarAlCarrito(producto){
 
-    if( id && id > 0){
+    if( producto && producto.id > 0){
 
-        almacenarCarrito(id);
+        almacenarCarrito(producto);
       
     }
     
 }
 
-function agregarId(productos){
-
-    for (let i = 0; i < productos.length; i++) {
-        
-
-       productosConId.push(
-        {
-            id : i+1,
-            imagen :  productos[i].imagen,
-            nombre :  productos[i].nombre,
-            precio :  productos[i].precio
-        }
-       )
-        
-        
-    }
-
-    
-}
 
 function mostrarProductos(productos){
 
-    productos.forEach((element) => {
+    productos.forEach((producto) => {
       const container = document.createElement("div");
-      container.innerHTML = retornarCardHTML(element);
+      container.innerHTML = retornarCardHTML(producto);
       if (window.document.querySelector(".container")) {
         window.document.querySelector(".container").appendChild(container);
       }
     });
 
-    console.log(arrayProductos);
 
 }
 

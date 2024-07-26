@@ -1,17 +1,12 @@
-import { productosConId } from "./index.js";
-
 export var carritoFrutas = [];
 
 export function borrarCarrito(id) {
+
   carritoFrutas = verificarCarrito();
 
-  const res = productosConId.find((e) => e.id == id);
-
   var nuevoCarrito = [];
-
-  if (res) {
-    nuevoCarrito = carritoFrutas.filter((e) => e.id != id);
-  }
+  nuevoCarrito = carritoFrutas.filter((e) => e.id != id);
+  
   localStorage.clear();
   console.log("nuevo carrito " + nuevoCarrito);
   localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
@@ -19,17 +14,16 @@ export function borrarCarrito(id) {
   console.table(carritoFrutas);
 }
 
-export function almacenarCarrito(id) {
-  carritoFrutas = verificarCarrito();
+export function almacenarCarrito(producto) {
 
-  const res = productosConId.find((e) => e.id == id);
+    carritoFrutas = verificarCarrito();
 
-  if (res) {
-    carritoFrutas.push(res);
+    carritoFrutas.push(producto);
+    localStorage.clear();
     localStorage.setItem("carrito", JSON.stringify(carritoFrutas));
     console.clear();
     console.table(carritoFrutas);
-  }
+  
 }
 
 function verificarCarrito() {
